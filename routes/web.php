@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// 静态页面路由
+Route::get('/', 'StaticPagesController@home');      // 首页
+Route::get('/help', 'StaticPagesController@help');    // 帮助
+Route::get('/about', 'StaticPagesController@about');    // 关于
+Route::get('/contact', 'StaticPagesController@contact');    // 联系我们
+
+
