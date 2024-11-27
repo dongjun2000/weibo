@@ -20,3 +20,5 @@ Route::get('/about', 'StaticPagesController@about')->name('about');    // 关于
 Route::get('/contact', 'StaticPagesController@contact')->name('contact');    // 联系我们
 
 Route::get('/signup', 'UsersController@create')->name('signup');    // 注册页面
+
+Route::resource('users', 'UsersController');    // 用户资源路由
