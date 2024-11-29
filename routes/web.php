@@ -21,4 +21,9 @@ Route::get('/contact', 'StaticPagesController@contact')->name('contact');    // 
 
 Route::get('/signup', 'UsersController@create')->name('signup');    // 注册页面
 
+Route::get('/login', 'SessionsController@create')->name('login');    // 登录页面
+Route::post('/login', 'SessionsController@store')->name('login');    // 登录提交
+Route::delete('/logout', 'SessionsController@destroy')->name('logout');    // 退出登录
+
 Route::resource('users', 'UsersController');    // 用户资源路由
+
