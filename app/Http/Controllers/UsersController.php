@@ -21,6 +21,13 @@ class UsersController extends Controller
         ]);
     }
 
+    // 所有用户列表
+    public function index()
+    {
+        $users = User::all();
+        return view('users.index', compact('users'));
+    }
+
     // 注册页面
     public function create()
     {
