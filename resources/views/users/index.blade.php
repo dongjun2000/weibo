@@ -7,13 +7,12 @@
     <h2 class="mb-4 text-center">所有用户列表</h2>
     <div class="list-group list-group-flush">
       @foreach($users as $user)
-        <div class="list-group-item">
-          <img src="{{ $user->gravatar()}}" alt="{{ $user->name }}" width="32">
-          <a href="{{ route('users.show', $user) }}">
-            {{ $user->name }}
-          </a>
-        </div>
+        @include('users._user', ['user' => $user])
       @endforeach
+    </div>
+
+    <div class="mt-3">
+      {!! $users->render()!!}
     </div>
   </div>
 @stop
