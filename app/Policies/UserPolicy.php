@@ -30,4 +30,16 @@ class UserPolicy
     {
         return $currentUser->id === $user->id;
     }
+
+    /**
+     * 授权策略：只有管理员可以删除其他用户
+     *
+     * @param User $currentUser 当前用户
+     * @param User $user 要删除的用户
+     * @return bool 允许删除返回true, 否则返回false
+     */
+    public function destroy(User $currentUser, User $user)
+    {
+        return $currentUser->is_admin && $currentUser->id !== $user->id;
+    }
 }

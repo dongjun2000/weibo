@@ -12,7 +12,7 @@ class UsersController extends Controller
     {
         // 除了 show、create、store 以外的都需要登录才能访问
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store']
+            'except' => ['show', 'create', 'store', 'index']
         ]);
 
         // 已登录的用户不能访问注册页面
@@ -89,5 +89,13 @@ class UsersController extends Controller
         session()->flash('success', '个人资料更新成功!');
 
         return redirect()->route('users.show', [$user]);
+    }
+
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success', '用户删除成功!');
+        return back();
     }
 }
