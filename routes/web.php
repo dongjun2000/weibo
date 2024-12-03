@@ -20,6 +20,7 @@ Route::get('/about', 'StaticPagesController@about')->name('about');    // 关于
 Route::get('/contact', 'StaticPagesController@contact')->name('contact');    // 联系我们
 
 Route::get('/signup', 'UsersController@create')->name('signup');    // 注册页面
+Route::get('/signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');    // 确认邮箱
 
 Route::get('/login', 'SessionsController@create')->name('login');    // 登录页面
 Route::post('/login', 'SessionsController@store')->name('login');    // 登录提交

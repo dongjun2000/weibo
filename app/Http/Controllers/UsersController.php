@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
     public function __construct()
     {
-        // 除了 show、create、store 以外的都需要登录才能访问
+        // 除了 show, create, store, index, confirmEmail 都需要登录才能访问
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store', 'index']
+            'except' => ['show', 'create', 'store', 'index', 'confirmEmail']
         ]);
 
         // 已登录的用户不能访问注册页面
@@ -55,10 +56,11 @@ class UsersController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        Auth::login($user);
-        session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
+        $this->sendEmailConfirmationTo($user);  // 发送邮件确认邮件
 
-        return redirect()->route('users.show', [$user]);
+        session()->flash('success', '验证邮件已发送到你的注册邮箱上，请注意查收。');
+
+        return redirect()->route('home');
     }
 
     // 编辑个人资料页面
@@ -97,5 +99,43 @@ class UsersController extends Controller
         $user->delete();
         session()->flash('success', '用户删除成功!');
         return back();
+    }
+
+    /**
+     * 验证邮箱
+     * @param $token string 邮箱验证 token
+     */
+    public function confirmEmail($token)
+    {
+        $user = User::where('activation_token', $token)->firstOrFail();     // 根据 token 找出用户， firstOrFail() 确保用户存在, 否则抛出异常
+
+        // 验证用户是否已激活
+        $user->activated = true;        // 标记为已激活
+        $user->activation_token = null; // 清空 token
+        $user->save();
+
+        Auth::login($user); // 登录用户
+        session()->flash('success', '邮箱验证成功!');
+        return redirect()->route('users.show', [$user]);
+    }
+
+    /**
+     * 发送验证邮件
+     * @param User $user 用户实例
+     */
+    public function sendEmailConfirmationTo(User $user)
+    {
+
+        $view = 'emails.confirm';     // 邮件模板
+        $data = compact('user');    // 邮件数据
+        $form = 'admin@example.com';    // 发件人
+        $name = 'Admin';    // 发件人昵称
+        $to = $user->email; // 收件人
+        $subject = '感谢注册 微博 应用！请确认您的邮箱';    // 邮件主题
+
+        // 发送邮件
+        Mail::send($view, $data, function ($message) use ($form, $name, $to, $subject) {
+            $message->from($form, $name)->to($to)->subject($subject);
+        });
     }
 }

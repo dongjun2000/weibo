@@ -45,6 +45,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * boot() 方法用来监听模型事件，比如创建、更新、删除。
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        // 监听模型创建事件，生成激活码
+        static::creating(function ($user) {
+            $user->activation_token = md5($user->email . microtime());
+        });
+    }
+
     public function gravatar($size = '100')
     {
         $hash = md5(strtolower(trim($this->email)));
