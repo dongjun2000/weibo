@@ -11974,6 +11974,10 @@ nav.navbar.navbar-expand-lg {
   margin-bottom: 20px;
 }
 
+a {
+  text-decoration: none;
+}
+
 /* footer */
 footer {
   margin-top: 45px;

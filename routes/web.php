@@ -22,6 +22,11 @@ Route::get('/contact', 'StaticPagesController@contact')->name('contact');    // 
 Route::get('/signup', 'UsersController@create')->name('signup');    // 注册页面
 Route::get('/signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');    // 确认邮箱
 
+Route::get('/password/reset', 'PasswordController@showLinkRequestForm')->name('password.request');    // 忘记密码页面
+Route::post('/password/email', 'PasswordController@sendResetLinkEmail')->name('password.email');    // 发送重置密码邮件
+Route::get('/password/reset/{token}', 'PasswordController@showResetForm')->name('password.reset');   // 重置密码页面
+Route::post('/password/reset', 'PasswordController@reset')->name('password.update');    // 重置密码提交
+
 Route::get('/login', 'SessionsController@create')->name('login');    // 登录页面
 Route::post('/login', 'SessionsController@store')->name('login');    // 登录提交
 Route::delete('/logout', 'SessionsController@destroy')->name('logout');    // 退出登录

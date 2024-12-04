@@ -129,7 +129,7 @@ class UsersController extends Controller
         $view = 'emails.confirm';     // 邮件模板
         $data = compact('user');    // 邮件数据
         $form = 'admin@example.com';    // 发件人
-        $name = 'Admin';    // 发件人昵称
+        $name = '微博';    // 发件人昵称
         $to = $user->email; // 收件人
         $subject = '感谢注册 微博 应用！请确认您的邮箱';    // 邮件主题
 
