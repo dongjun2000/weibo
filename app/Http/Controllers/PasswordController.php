@@ -53,8 +53,64 @@ class PasswordController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * 重置密码页面
+     * @param $token 重置密码的 token 值
+     */
     function showResetForm($token)
     {
-        // return view('auth.passwords.reset', compact('token'));
+        return view('auth.passwords.reset', compact('token'));
+    }
+
+    /**
+     * 重置密码操作
+     * @param Request $request 表单数据
+     */
+    public function reset(Request $request)
+    {
+        // 验证表单数据
+        $this->validate($request, [
+            'token' => 'required',
+            'email' =>'required|email',
+            'password' =>'required|string|min:6|confirmed'
+        ]);
+        $token = $request->token;
+        $email = $request->email;
+
+        // 获取对应用户
+        $user = User::where('email', $email)->first();
+
+        // 如果用户不存在
+        if (is_null($user)) {
+            session()->flash('danger', '邮箱未注册!');
+            return redirect()->back()->withInput();
+        }
+
+        // 读取重置的记录
+        $tokenRecord = DB::table('password_resets')->where('email', $email)->first();
+
+        // 如果 token 记录不存在
+        if (is_null($tokenRecord)) {
+            session()->flash('danger', '未找到重置记录!');
+            return redirect()->back();
+        }
+
+        // 检查 token 是否过期
+        $expires = 60 * 100; // 10 分钟
+        if (Carbon::parse($tokenRecord->created_at)->addSeconds($expires)->isPast()) {
+            session()->flash('danger', '重置密码链接已过期!');
+            return redirect()->back();
+        }
+
+        // 检查 token 是否正确
+        if (! Hash::check($token, $tokenRecord->token)) {
+            session()->flash('danger', '重置密码链接无效!');
+            return redirect()->back();
+        }
+
+        // 更新用户密码
+        $user->update(['password' => bcrypt($request->password)]);
+        session()->flash('success', '密码重置成功，请使用新密码登录!');
+        return redirect()->route('login');
     }
 }

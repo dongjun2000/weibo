@@ -15,8 +15,8 @@
           @csrf
 
           <div class="mb-3">
-            <label for="email" class="form-control-label">邮箱地址：</label>
-            <input type="text" id="email" name="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" required>
+            <label for="email" class="form-label">邮箱地址：</label>
+            <input type="text" id="email" name="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}">
 
             @if ($errors->has('email'))
              <span class="invalid-feedback">
