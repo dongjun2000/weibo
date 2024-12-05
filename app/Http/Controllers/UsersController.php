@@ -20,6 +20,11 @@ class UsersController extends Controller
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+
+        // 限流
+        $this->middleware('throttle:10,60', [
+            'only' => ['store']
+        ]);
     }
 
     // 所有用户列表

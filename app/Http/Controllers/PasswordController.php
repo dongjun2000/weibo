@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Hash;
 
 class PasswordController extends Controller
 {
+    public function __construct()
+    {
+        // 限流
+        $this->middleware('throttle:3,10', [
+            'only' => ['sendResetLinkEmail']
+        ]);
+    }
+
     // 忘记密码页面
     public function showLinkRequestForm()
     {
