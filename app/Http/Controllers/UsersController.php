@@ -43,7 +43,9 @@ class UsersController extends Controller
     // 个人中心
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        $statuses =$user->statuses()->orderBy('created_at', 'desc')->paginate(30);
+
+        return view('users.show', compact('user', 'statuses'));
     }
 
     // 注册逻辑
@@ -128,7 +130,7 @@ class UsersController extends Controller
      * 发送验证邮件
      * @param User $user 用户实例
      */
-    public function sendEmailConfirmationTo(User $user)
+    private function sendEmailConfirmationTo(User $user)
     {
 
         $view = 'emails.confirm';     // 邮件模板
