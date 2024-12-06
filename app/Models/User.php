@@ -45,6 +45,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // 定义关系 - 一个用户有多条微博
+    public function statuses() {
+        return $this->hasMany(Status::class);
+    }
+
     /**
      * boot() 方法用来监听模型事件，比如创建、更新、删除。
      */
