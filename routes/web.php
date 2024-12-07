@@ -32,4 +32,5 @@ Route::post('/login', 'SessionsController@store')->name('login');    // 登录�
 Route::delete('/logout', 'SessionsController@destroy')->name('logout');    // 退出登录
 
 Route::resource('users', 'UsersController');    // 用户资源路由
+Route::resource('statuses', 'StatusesController', ['only' => ['store', 'destroy']]);    // 微博资源路由
 
