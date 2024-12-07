@@ -9,8 +9,10 @@
       <section class="status_form">
         @include('shared._status_form')
       </section>
+      <h4>微博列表</h4>
+      <hr>
+      @include('shared._feed')
     </div>
-
     <aside class="col-md-4">
       <section class="user_info">
         @include('shared._user_info', ['user' => Auth::user()])
@@ -19,9 +21,9 @@
   </div>
 @else
   <div class="bg-light p-3 p-sm-5 rounded">
-    <h1>Hello Laravel</h1>
+    <h1>欢迎来到微博</h1>
     <p class="lead">
-      你现在所看到的是 <a href="https://learnku.com/courses/laravel-essential-training">Laravel 入门教程</a> 的示例项目主页。
+      微博是一个基于 Laravel 框架开发的微博系统，你可以在这里发布你的想法、记录你的生活。
     </p>
     <p>
       一切，将从这里开始。
