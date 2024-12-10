@@ -11,9 +11,17 @@ class UsersController extends Controller
 {
     public function __construct()
     {
-        // 除了 show, create, store, index, confirmEmail 都需要登录才能访问
+        // 除了这里指定的路由外，其他路由都需要登录才能访问
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store', 'index', 'confirmEmail']
+            'except' => [
+                'show',
+                'create',
+                'store',
+                'index',
+                'confirmEmail',
+                'followings',
+                'followers'
+            ]
         ]);
 
         // 已登录的用户不能访问注册页面
@@ -67,13 +75,22 @@ class UsersController extends Controller
     // 关注用户
     public function follow(User $user)
     {
+        $this->authorize('follow', $user);
+        if (!Auth::user()->isFollowing($user)) {
+            Auth::user()->follow($user->id);
+        }
 
+        return redirect()->route('users.show', [$user]);
     }
 
     // 取消关注用户
     public function unfollow(User $user)
     {
-
+        $this->authorize('follow', $user);
+        if (Auth::user()->isFollowing($user->id)) {
+            Auth::user()->unfollow($user->id);
+        }
+        return redirect()->route('users.show', [$user]);
     }
 
     // 注册逻辑

@@ -42,4 +42,16 @@ class UserPolicy
     {
         return $currentUser->is_admin && $currentUser->id !== $user->id;
     }
+
+    /**
+     * 授权策略：只有当前用户和要关注的用户是不同的人时才允许关注
+     *
+     * @param User $currentUser 当前用户
+     * @param User $user 要关注的用户
+     * @return bool 允许关注返回true, 否则返回false
+     */
+    public function follow(User $currentUser, User $user)
+    {
+        return $currentUser->id !== $user->id;
+    }
 }
