@@ -34,3 +34,8 @@ Route::delete('/logout', 'SessionsController@destroy')->name('logout');    // �
 Route::resource('users', 'UsersController');    // 用户资源路由
 Route::resource('statuses', 'StatusesController', ['only' => ['store', 'destroy']]);    // 微博资源路由
 
+Route::get('/users/{user}/followings', 'UsersController@followings')->name('users.followings');    // 关注列表
+Route::get('/users/{user}/followers', 'UsersController@followers')->name('users.followers');    // 粉丝列表
+
+Route::post('/users/followers/{user}', 'UsersController@follow')->name('users.follow');    // 关注
+Route::delete('/users/followers/{user}', 'UsersController@unfollow')->name('users.unfollow');    // 取消关注
