@@ -10,6 +10,9 @@
           <section class="user_info">
             @include('shared._user_info', ['user' => $user])
           </section>
+          <section class="stats mt-2">
+            @include('shared._stats')
+          </section>
 
           <section class="statuses">
             @if ($statuses->count() > 0)
